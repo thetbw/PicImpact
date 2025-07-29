@@ -1,4 +1,4 @@
-name: Latest Docker Multi-arch Image CI & CD
+name: Dev Docker Image CI & CD
 
 on:
   workflow_dispatch:
