@@ -9,7 +9,7 @@ import {
 } from '~/server/db/operate/images'
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
 const app = new Hono()
 
@@ -32,8 +32,15 @@ app.post('/add', async (c) => {
 
   try {
     // 验证可能存在的时间信息
-    if (body?.exif?.data_time && !dayjs(body?.exif?.data_time).isValid()) {
-      body.exif.data_time = ''
+    if (body?.exif?.data_time) {
+      const dateTime =dayjs(body?.exif?.data_time) 
+      if (dateTime.isValid()) {
+        // 时间可能不是标准格式，重新格式化时间
+        // TODO 时区处理
+        body.exif.data_time = dateTime.format('YYYY:MM:DD HH:mm:ss')
+      }else {
+        body.exif.data_time = ''
+      }
     }
     // 保存图片信息
     const res = await insertImage(body)
