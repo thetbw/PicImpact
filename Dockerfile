@@ -11,8 +11,6 @@ RUN npm install -g corepack@latest && corepack enable pnpm && pnpm i --frozen-lo
 
 FROM base AS runner-base
 
-RUN apk add --no-cache libc6-compat
-
 WORKDIR /app
 
 RUN npm install -g corepack@latest && corepack enable pnpm && pnpm add prisma@6.4.1 @prisma/client@6.4.1
