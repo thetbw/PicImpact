@@ -1,13 +1,14 @@
-name: Release Docker Multi-arch Image CI & CD
+name: Dev Docker Image CI & CD
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - dev
 
 jobs:
   build:
-    name: Running Compile Next Multi-arch Docker Release Image
+    name: Running Compile Next Multi-arch Docker Main Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PicImpact
@@ -18,19 +19,20 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ vars.DOCKER_REPO }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         id: set_up_buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build and push version
-        id: docker_build_version
+      - name: Build and push main
+        id: docker_build
         uses: docker/build-push-action@v5
         with:
           context: ./
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/picimpact:${{ steps.get_version.outputs.VERSION }}
+          tags: ${{ vars.DOCKER_REPO }}/${{ vars.DOCKER_GROUP }}/picimpact:dev
