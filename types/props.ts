@@ -18,10 +18,10 @@ export type ImageServerHandleProps = {
 }
 
 export type ImageHandleProps = {
-  handle: (pageNum: number, tag: string) => any
+  handle: (pageNum: number, album: string, camera?: string, lens?: string) => any
   args: string
   album: string
-  totalHandle: (tag: string) => any
+  totalHandle: (album: string, camera?: string, lens?: string) => any
   configHandle: () => any
 }
 
@@ -36,6 +36,8 @@ export type ProgressiveImageProps = {
   imageUrl: string, // 原始图片
   previewUrl: string, // 预览图
   width?: number,
+  height?: number,
+  blurhash: string,
   alt?: string,
   showLightbox?:boolean
   onShowLightboxChange?: (value: boolean) => void

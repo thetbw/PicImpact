@@ -15,7 +15,6 @@ import { TimerIcon } from '~/components/icons/timer'
 import { CrosshairIcon } from '~/components/icons/crosshair'
 import { GaugeIcon } from '~/components/icons/gauge'
 import { XIcon } from '~/components/icons/x'
-import 'react-lazy-load-image-component/src/effects/blur.css'
 import { Badge } from '~/components/ui/badge'
 import { LanguagesIcon } from '~/components/icons/languages'
 import { CopyIcon } from '~/components/icons/copy'
@@ -83,7 +82,7 @@ export default function PreviewImage(props: Readonly<PreviewImageHandleProps>) {
         // 如果是 JSON 响应，说明是直接下载模式
         const data = await response.json()
         // 使用后端返回的文件名，并进行 URL 解码
-        const filename = decodeURIComponent(data.filename || 'download')
+        const filename = decodeURIComponent(data.filename || 'download.jpg')
         // 直接使用 window.location.href 触发下载
         response = await fetch(data.url)
         const blob = await response.blob()
@@ -135,8 +134,12 @@ export default function PreviewImage(props: Readonly<PreviewImageHandleProps>) {
           {
             props.data.type === 1 ?
               <ProgressiveImage 
-                imageUrl={props.data.url } 
+                imageUrl={props.data.url}
                 previewUrl={props.data.preview_url}
+                alt={props.data.title}
+                height={props.data.height}
+                width={props.data.width}
+                blurhash={props.data.blurhash}
                 showLightbox={lightboxPhoto}
                 onShowLightboxChange={(value)=>setLightboxPhoto(value)}
               />

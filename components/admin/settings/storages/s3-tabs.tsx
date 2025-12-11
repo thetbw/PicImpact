@@ -4,20 +4,19 @@ import { Card } from '~/components/ui/card'
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '~/components/ui/table'
 import { Button } from '~/components/ui/button'
 import { ReloadIcon } from '@radix-ui/react-icons'
-import React from 'react'
 import useSWR from 'swr'
 import { fetcher } from '~/lib/utils/fetcher'
 import { toast } from 'sonner'
 import { useButtonStore } from '~/app/providers/button-store-providers'
 import S3EditSheet from '~/components/admin/settings/storages/s3-edit-sheet'
 import { useTranslations } from 'next-intl'
+import TabsTableCell from '~/components/admin/settings/storages/tabs-table-cell'
 
 export default function S3Tabs() {
   const { data, error, isValidating, mutate } = useSWR('/api/v1/settings/s3-info', fetcher
@@ -76,12 +75,7 @@ export default function S3Tabs() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((item: any) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.config_key}</TableCell>
-                  <TableCell className="truncate max-w-48">{item.config_value || 'N&A'}</TableCell>
-                </TableRow>
-              ))}
+              <TabsTableCell data={data} />
             </TableBody>
           </Table>
         </Card>

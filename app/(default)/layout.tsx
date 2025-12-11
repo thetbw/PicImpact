@@ -1,7 +1,7 @@
-import Header from '~/components/layout/header'
 import { fetchAlbumsShow } from '~/server/db/query/albums'
 import type { AlbumType } from '~/types'
 import type { AlbumDataProps } from '~/types/props'
+import DockMenu from '~/components/layout/dock-menu'
 
 export default async function DefaultLayout({
   children,
@@ -21,7 +21,7 @@ export default async function DefaultLayout({
 
   return (
     <>
-      <Header {...props} />
+      <DockMenu {...props} />
       {children}
     </>
   )

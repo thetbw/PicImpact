@@ -9,7 +9,6 @@ import { MasonryPhotoAlbum, RenderImageContext, RenderImageProps } from 'react-p
 import type { ImageType } from '~/types'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Button } from '~/components/ui/button'
-import React from 'react'
 import BlurImage from '~/components/album/blur-image'
 import { SparklesIcon } from '~/components/icons/sparkles'
 import { UndoIcon } from '~/components/icons/undo'
@@ -31,7 +30,8 @@ export default function TagGallery(props : Readonly<ImageHandleProps>) {
       return [`client-${props.args}-${index}-${props.album}`, index]
     },
     ([_, index]) => {
-      return props.handle(index + 1, props.album)
+      // Tag gallery doesn't use camera/lens filters
+      return props.handle(index + 1, props.album, undefined, undefined)
     }, {
       revalidateOnFocus: false,
       revalidateIfStale: false,

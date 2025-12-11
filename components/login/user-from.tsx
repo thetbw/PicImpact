@@ -21,9 +21,9 @@ import {
 } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { useButtonStore } from '~/app/providers/button-store-providers'
 import { useTranslations } from 'next-intl'
 import { authClient } from '~/server/auth/auth-client'
+import { PasskeyLogin } from '~/components/auth/passkey-login'
 
 export const UserFrom = ({
   className,
@@ -64,10 +64,6 @@ export const UserFrom = ({
       }
     }
   }
-
-  const { setLoginHelp } = useButtonStore(
-    (state) => state,
-  )
   
   function zHandle(): SafeParseReturnType<string | any, string | any> {
     const parsedCredentials = z
@@ -214,6 +210,17 @@ export const UserFrom = ({
               >
                 {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}{t('Login.signIn')}
               </Button>
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground select-none">
+                    {t('Login.or')}
+                  </span>
+                </div>
+              </div>
+              <PasskeyLogin className="w-full" email={email} />
               <Button
                 className="w-full select-none cursor-pointer"
                 onClick={() => router.push('/')}

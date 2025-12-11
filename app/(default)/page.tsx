@@ -1,27 +1,29 @@
 import type { ImageHandleProps } from '~/types/props'
 import { fetchClientImagesListByAlbum, fetchClientImagesPageTotalByAlbum } from '~/server/db/query/images'
-import Gallery from '~/components/album/gallery'
+import SimpleGallery from '~/components/layout/theme/simple/simple-gallery.tsx'
 import { fetchConfigsByKeys } from '~/server/db/query/configs'
-import AlbumGallery from '~/components/album/album-gallery'
+import DefaultGallery from '~/components/layout/theme/default/default-gallery.tsx'
 import 'react-photo-album/masonry.css'
 import type { Config } from '~/types'
+import PolaroidGallery from '~/components/layout/theme/polaroid/polaroid-gallery.tsx'
 
 export default async function Home() {
-  const getData = async (pageNum: number, album: string) => {
+  const getData = async (pageNum: number, album: string, camera?: string, lens?: string) => {
     'use server'
-    return await fetchClientImagesListByAlbum(pageNum, album)
+    return await fetchClientImagesListByAlbum(pageNum, album, camera, lens)
   }
 
-  const getPageTotal = async (album: string) => {
+  const getPageTotal = async (album: string, camera?: string, lens?: string) => {
     'use server'
-    return await fetchClientImagesPageTotalByAlbum(album)
+    return await fetchClientImagesPageTotalByAlbum(album, camera, lens)
   }
 
   const getConfig = async () => {
     'use server'
     return await fetchConfigsByKeys([
       'custom_index_download_enable',
-      'custom_index_origin_enable'
+      'custom_index_origin_enable',
+      'custom_title'
     ])
   }
 
@@ -33,7 +35,7 @@ export default async function Home() {
   }
 
   const style: Config[] = await getStyleConfig()
-  const currentStyle = style?.find(a => a.config_key === 'custom_index_style').config_value
+  const currentStyle = style.find(a => a.config_key === 'custom_index_style')?.config_value
 
   const props: ImageHandleProps = {
     handle: getData,
@@ -45,8 +47,10 @@ export default async function Home() {
 
   return (
     <>
-      {currentStyle && currentStyle === '1' ?
-        <Gallery {...props} /> : <AlbumGallery {...props} />
+      {currentStyle
+        && currentStyle === '1' ? <SimpleGallery {...props} />
+        : currentStyle === '2' ? <PolaroidGallery {...props} />
+        : <DefaultGallery {...props} />
       }
     </>
   )

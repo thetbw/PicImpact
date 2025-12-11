@@ -5,6 +5,7 @@ export type AlbumType = {
   name: string;
   album_value: string;
   detail: string | null;
+  theme: string;
   show: number;
   sort: number;
   license: string | null;
@@ -35,10 +36,12 @@ export type ExifType = {
 
 export type ImageType = {
   id: string;
+  image_name: string;
   title: string;
   url: string;
   preview_url: string;
   video_url: string;
+  blurhash: string;
   exif: ExifType;
   labels: any;
   width: number;
